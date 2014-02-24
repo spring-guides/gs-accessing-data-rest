@@ -22,7 +22,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableJpaRepositories
-@EnableTransactionManagement
 @Import(RepositoryRestMvcConfiguration.class)
 @EnableAutoConfiguration
 public class Application {
