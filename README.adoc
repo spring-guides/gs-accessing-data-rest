@@ -1,5 +1,5 @@
 ---
-tags: [spring-data, rest]
+tags: [spring-data, rest, hateoas]
 projects: [spring-data-rest]
 ---
 :spring_version: current
@@ -19,7 +19,7 @@ projects: [spring-data-rest]
 :source-highlighter: prettify
 :project_id: gs-accessing-data-rest
 
-This guide walks you through the process of creating an application that accesses relational data through a RESTful front end.
+This guide walks you through the process of creating an application that accesses relational data through a link:/guides/gs/rest-hateoas[hypermedia-based] RESTful front end.
 
 == What you'll build
 
