@@ -19,7 +19,7 @@ projects: [spring-data-rest]
 :source-highlighter: prettify
 :project_id: gs-accessing-data-rest
 
-This guide walks you through the process of creating an application that accesses relational data through a link:/guides/gs/rest-hateoas[hypermedia-based] RESTful front end.
+This guide walks you through the process of creating an application that accesses relational data through a link:/guides/gs/rest-hateoas[hypermedia-based] link:/understanding/REST[RESTful] front end.
 
 == What you'll build
 
@@ -213,6 +213,8 @@ $ curl http://localhost:8080/people/1
 }
 ```
 
+NOTE: This might appear to be purely web based, but behind the scenes, there is an H2 relational database. In production, you would probably use a real one, like PostgreSQL.
+
 In this guide, there is only one domain object. With a more complex system where domain objects are related to each other, Spring Data REST will render additional links to help navigate to connected records.
 
 You can also issue PUT, PATCH, and DELETE REST calls to either replace, update, or delete existing records.
@@ -270,6 +272,6 @@ $ curl http://localhost:8080/people
 
 == Summary
 
-Congratulations! You've just developed an application with a RESTful front end and a JPA-based back end.
+Congratulations! You've just developed an application with a link:/guides/gs/rest-hateoas[hypermedia-based] link:/understanding/REST[RESTful] front end and a JPA-based back end.
 
 
