@@ -1,0 +1,275 @@
+---
+tags: [spring-data, rest]
+projects: [spring-data-rest]
+---
+:spring_version: current
+:spring_data_rest: 2.0.0.RELEASE
+:spring_data_jpa: 1.5.0.RELEASE
+:spring_data_commons: 1.7.0.RELEASE
+:spring_boot_version: 1.0.0.RC3
+:EnableJpaRepositories: http://docs.spring.io/spring-data/jpa/docs/{spring_data_jpa}/api/org/springframework/data/jpa/repository/config/EnableJpaRepositories.html
+:Component: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/stereotype/Component.html
+:Controller: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/stereotype/Controller.html
+:DispatcherServlet: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/servlet/DispatcherServlet.html
+:SpringApplication: http://docs.spring.io/spring-boot/docs/{spring_boot_version}/api/org/springframework/boot/SpringApplication.html
+:ResponseBody: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/ResponseBody.html
+:EnableAutoConfiguration: http://docs.spring.io/spring-boot/docs/{spring_boot_version}/api/org/springframework/boot/autoconfigure/EnableAutoConfiguration.html
+:toc:
+:icons: font
+:source-highlighter: prettify
+:project_id: gs-accessing-data-rest
+
+This guide walks you through the process of creating an application that accesses relational data through a RESTful front end.
+
+== What you'll build
+
+You'll build a Spring application that let's you create and retrieve `Person` objects stored in a database using Spring Data REST. Spring Data REST takes the features of http://projects.spring.io/spring-hateoas[Spring HATEOAS] and http://projects.spring.io/spring-data-jpa[Spring Data JPA] and combines them together automatically.
+
+NOTE: Spring Data REST also supports Spring Data Gemfire and Spring Data MongoDB as backend data stores, but those are not part of this guide.
+
+== What you'll need
+
+include::https://raw.github.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
+
+include::https://raw.github.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc[]
+
+
+[[scratch]]
+== Set up the project
+
+include::https://raw.github.com/spring-guides/getting-started-macros/master/build_system_intro.adoc[]
+
+include::https://raw.github.com/spring-guides/getting-started-macros/master/create_directory_structure_hello.adoc[]
+
+include::https://raw.github.com/spring-guides/getting-started-macros/master/create_both_builds.adoc[]
+
+`build.gradle`
+// AsciiDoc source formatting doesn't support groovy, so using java instead
+[source,java]
+----
+include::initial/build.gradle[]
+----
+
+include::https://raw.github.com/spring-guides/getting-started-macros/master/spring-boot-gradle-plugin.adoc[]
+
+
+[[initial]]
+== Create a domain object
+
+Create a new domain object to present a person.
+
+`src/main/java/hello/Person.java`
+[source,java]
+----
+include::complete/src/main/java/hello/Person.java[]
+----
+
+The `Person` has a first name and a last name. There is also an id object that is configured to be automatically generated so you don't have to deal with that.
+
+== Create a Person repository
+
+Next you need to create a simple repository.
+
+`src/main/java/hello/PersonRepository.java`
+[source,java]
+----
+include::complete/src/main/java/hello/PersonRepository.java[]
+----
+
+This repository is an interface and will allow you to perform various operations involving `Person` objects. It gets these operations by extending the http://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[PagingAndSortingRepositry] interface defined in Spring Data Commons.
+
+At runtime, Spring Data REST will create an implementation of this interface automatically. Then it will use the http://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to create RESTful endpoints at `/people`.
+
+== Make the application executable
+
+Although it is possible to package this service as a traditional link:/understanding/WAR[WAR] file for deployment to an external application server, the simpler approach demonstrated below creates a standalone application. You package everything in a single, executable JAR file, driven by a good old Java `main()` method. Along the way, you use Spring's support for embedding the link:/understanding/Tomcat[Tomcat] servlet container as the HTTP runtime, instead of deploying to an external instance.
+
+
+`src/main/java/hello/Application.java`
+[source,java]
+----
+include::complete/src/main/java/hello/Application.java[]
+----
+
+The `main()` method defers to the {SpringApplication}[`SpringApplication`] helper class, providing `Application.class` as an argument to its `run()` method. This tells Spring to read the annotation metadata from `Application` and to manage it as a component in the link:/understanding/application-context[Spring application context].
+
+The {EnableJpaRepositories}[`@EnableJpaRepositories`] annotation activates Spring Data JPA. Spring Data JPA will create a concrete implementation of the `PersonRepository` and configure it to talk to a back end in-memory database using JPA.
+
+Spring Data REST is a Spring MVC application. The `@Import(RepositoryRestMvcConfiguration.class)` annotation imports a collection of Spring MVC controllers, JSON converters, and other beans needed to provide a RESTful front end. These components link up to the Spring Data JPA backend.
+
+The {EnableAutoConfiguration}[`@EnableAutoConfiguration`] annotation switches on reasonable default behaviors based on the content of your classpath. For example, because the application depends on the embeddable version of Tomcat (tomcat-embed-core.jar), a Tomcat server is set up and configured with reasonable defaults on your behalf. And because the application also depends on Spring MVC (spring-webmvc.jar), a Spring MVC {DispatcherServlet}[`DispatcherServlet`] is configured and registered for you — no `web.xml` necessary! Auto-configuration is a powerful, flexible mechanism. See the {EnableAutoConfiguration}[API documentation] for further details.
+
+include::https://raw.github.com/spring-guides/getting-started-macros/master/build_an_executable_jar_subhead.adoc[]
+
+include::https://raw.github.com/spring-guides/getting-started-macros/master/build_an_executable_jar_with_both.adoc[]
+
+:module: service
+include::https://raw.github.com/spring-guides/getting-started-macros/master/run_the_application_with_both.adoc[]
+
+Logging output is displayed. The service should be up and running within a few seconds.
+
+
+== Test the application
+
+Now that the application is running, you can test it. You can use any REST client you wish. The following examples use the *nix tool `curl`.
+
+First you want to see the top level service.
+
+```
+$ curl http://localhost:8080
+{
+  "_links" : {
+    "people" : {
+      "href" : "http://localhost:8080/people{?page,size,sort}",
+      "templated" : true
+    }
+  }
+}
+```
+
+Here you get a first glimpse of what this server has to offer. There is a **people** link located at http://localhost:8080/people. It has some options such as `?page`, `?size`, and `?sort`.
+
+NOTE: Spring Data REST uses the http://stateless.co/hal_specification.html[HAL format] for JSON output. It is flexible and offers a convenient way to supply links adjacent to the data that is served.
+
+```
+$ curl http://localhost:8080/people
+{
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/people{?page,size,sort}",
+      "templated" : true
+    }
+  },
+  "page" : {
+    "size" : 20,
+    "totalElements" : 0,
+    "totalPages" : 0,
+    "number" : 0
+  }
+}
+```
+
+There are currently no elements and hence no pages. Time to create a new `Person`!
+
+```
+$ curl -i -X POST -H "Content-Type:application/json" -d '{  "firstName" : "Frodo",  "lastName" : "Baggins" }' http://localhost:8080/people
+HTTP/1.1 201 Created
+Server: Apache-Coyote/1.1
+Location: http://localhost:8080/people/1
+Content-Length: 0
+Date: Wed, 26 Feb 2014 20:26:55 GMT
+```
+
+- `-i` ensures you can see the response message including the headers. The URI of the newly created `Person` is shown
+- `-X POST` signals this a POST used to create a new entry
+- `-H "Content-Type:application/json"` sets the content type so the application knows the payload contains a JSON object
+- `-d '{  "firstName" : "Frodo",  "lastName" : "Baggins" }'` is the data being sent
+
+From this you can query against for all people:
+
+```
+$ curl http://localhost:8080/people
+{
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/people{?page,size,sort}",
+      "templated" : true
+    }
+  },
+  "_embedded" : {
+    "persons" : [ {
+      "firstName" : "Frodo",
+      "lastName" : "Baggins",
+      "_links" : {
+        "self" : {
+          "href" : "http://localhost:8080/people/1"
+        }
+      }
+    } ]
+  },
+  "page" : {
+    "size" : 20,
+    "totalElements" : 1,
+    "totalPages" : 1,
+    "number" : 0
+  }
+}
+```
+
+The **persons** object contains a list with Frodo. Notice how it includes a **self** link. Spring Data REST also uses http://www.atteo.org/2011/12/12/Evo-Inflector.html[Evo Inflector] to pluralize the name of the entity for groupings.
+
+You can query directly for the individual record:
+
+```
+$ curl http://localhost:8080/people/1
+{
+  "firstName" : "Frodo",
+  "lastName" : "Baggins",
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/people/1"
+    }
+  }
+}
+```
+
+In this guide, there is only one domain object. With a more complex system where domain objects are related to each other, Spring Data REST will render additional links to help navigate to connected records.
+
+You can also issue PUT, PATCH, and DELETE REST calls to either replace, update, or delete existing records.
+
+```
+$ curl -X PUT -H "Content-Type:application/json" -d '{ "firstName": "Bilbo", "lastName": "Baggins" }' http://localhost:8080/people/1
+$ curl http://localhost:8080/people/1
+{
+  "firstName" : "Bilbo",
+  "lastName" : "Baggins",
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/people/1"
+    }
+  }
+}
+```
+
+```
+$ curl -X PATCH -H "Content-Type:application/json" -d '{ "firstName": "Bilbo Jr." }' http://localhost:8080/people/1
+$ curl http://localhost:8080/people/1
+{
+  "firstName" : "Bilbo Jr.",
+  "lastName" : "Baggins",
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/people/1"
+    }
+  }
+}
+```
+
+NOTE: PUT replaces an entire record. Fields not supplied will be replaced with null. PATCH can be used to update a subset of items.
+
+You can delete records:
+
+```
+$ curl -X DELETE http://localhost:8080/people/1
+$ curl http://localhost:8080/people
+{
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/people{?page,size,sort}",
+      "templated" : true
+    }
+  },
+  "page" : {
+    "size" : 20,
+    "totalElements" : 0,
+    "totalPages" : 0,
+    "number" : 0
+  }
+}
+```
+
+== Summary
+
+Congratulations! You've just developed an application with a RESTful front end and a JPA-based back end.
+
+
