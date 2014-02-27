@@ -1,5 +1,5 @@
 ---
-tags: [spring-data, rest, hateoas]
+tags: [spring-data, jpa, rest, hateoas]
 projects: [spring-data-rest]
 ---
 :spring_version: current
@@ -19,13 +19,13 @@ projects: [spring-data-rest]
 :source-highlighter: prettify
 :project_id: gs-accessing-data-rest
 
-This guide walks you through the process of creating an application that accesses relational data through a link:/guides/gs/rest-hateoas[hypermedia-based] link:/understanding/REST[RESTful] front end.
+This guide walks you through the process of creating an application that accesses relational JPA data through a link:/guides/gs/rest-hateoas[hypermedia-based] link:/understanding/REST[RESTful] front end.
 
 == What you'll build
 
 You'll build a Spring application that let's you create and retrieve `Person` objects stored in a database using Spring Data REST. Spring Data REST takes the features of http://projects.spring.io/spring-hateoas[Spring HATEOAS] and http://projects.spring.io/spring-data-jpa[Spring Data JPA] and combines them together automatically.
 
-NOTE: Spring Data REST also supports Spring Data Gemfire and Spring Data MongoDB as backend data stores, but those are not part of this guide.
+NOTE: Spring Data REST also supports link:/guides/gs/accessing-neo4j-data-rest[Spring Data Neo4j], Spring Data Gemfire and Spring Data MongoDB as backend data stores, but those are not part of this guide.
 
 == What you'll need
 
