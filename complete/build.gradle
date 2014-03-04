@@ -4,7 +4,7 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC3")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.0.0.RC4")
     }
 }
 
@@ -27,7 +27,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
     compile("com.h2database:h2")
-    compile("org.springframework.data:spring-data-rest-webmvc:2.0.0.RELEASE")
+    compile("org.springframework.data:spring-data-rest-webmvc")
 }
 
 task wrapper(type: Wrapper) {
