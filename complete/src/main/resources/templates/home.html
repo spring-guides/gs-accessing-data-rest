@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Spring Data REST + Javascript</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="/webjars/jquery/2.0.3/jquery.js"></script>
+    <script src="/jsclient/jquery"></script>
+</head>
+<body>
+    <p th:text="'Hello, World!'" />
+
+    <table id="people">
+
+    </table>
+
+    <form action="/" id="add">
+        <p>First name: <input type="text" name="firstName" /></p>
+        <p>Last name: <input type="text" name="lastName"/></p>
+        <p><input type="submit" value="Add" /></p>
+    </form>
+
+    <script type="application/javascript">
+        $("#add").submit(function(event){
+           event.preventDefault();
+            var $form = $(this),
+                    firstName = $form.find('input[name="firstName"]').val(),
+                    lastName = $form.find('input[name="lastName"]').val();
+            sdr.personRepository.create({firstName: firstName, lastName: lastName}).done(function(){
+                sdr.personRepository.findAll().done(function(data){
+                    console.log(data._embedded.people);
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
