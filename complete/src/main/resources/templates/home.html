@@ -9,9 +9,7 @@
 <body>
     <p th:text="'Hello, World!'" />
 
-    <table id="people">
-
-    </table>
+    <table id="people"></table>
 
     <form action="/" id="add">
         <p>First name: <input type="text" name="firstName" /></p>
@@ -20,16 +18,41 @@
     </form>
 
     <script type="application/javascript">
+        var personRepository = sdr.repositoriesFactory(null).personRepository;
+
+        var buildTable = function() {
+            personRepository.findAll().done(function(data) {
+                if (typeof data._embedded != 'undefined') {
+                    var people = data._embedded.people;
+
+                    var html = '';
+                    for (var i in people) {
+                        console.log(people[i]._links.self.href);
+                        var row = '<tr>' +
+                                '<td>' + people[i].firstName + '</td>' +
+                                '<td>' + people[i].lastName + '</td>' +
+                                '</tr>';
+                        console.log('Adding ' + row);
+                        html += row;
+                    }
+                    $('#people').html(html);
+                }
+            });
+        };
+
+        $(function() {
+            buildTable();
+        });
+
         $("#add").submit(function(event){
-           event.preventDefault();
+            event.preventDefault();
             var $form = $(this),
                     firstName = $form.find('input[name="firstName"]').val(),
                     lastName = $form.find('input[name="lastName"]').val();
-            sdr.personRepository.create({firstName: firstName, lastName: lastName}).done(function(){
-                sdr.personRepository.findAll().done(function(data){
-                    console.log(data._embedded.people);
-                });
-            });
+            personRepository.create({
+                firstName: firstName,
+                lastName: lastName
+            }).done(buildTable);
         });
     </script>
 
