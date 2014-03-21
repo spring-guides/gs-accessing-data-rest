@@ -20,6 +20,11 @@
     <script type="application/javascript">
         var personRepository = sdr.repositoriesFactory(null).personRepository;
 
+        var deleteRow = function(uri) {
+            personRepository.delete(uri)
+                    .done(buildTable());
+        }
+
         var buildTable = function() {
             personRepository.findAll().done(function(data) {
                 if (typeof data._embedded != 'undefined') {
@@ -31,6 +36,7 @@
                         var row = '<tr>' +
                                 '<td>' + people[i].firstName + '</td>' +
                                 '<td>' + people[i].lastName + '</td>' +
+                                '<td><input type="button" value="Delete" onclick="deleteRow(\'' + encodeURI(people[i]._links.self.href) + '\')" /></td>' +
                                 '</tr>';
                         console.log('Adding ' + row);
                         html += row;
@@ -53,6 +59,10 @@
                 firstName: firstName,
                 lastName: lastName
             }).done(buildTable);
+        });
+
+        $("#people").on('input', function(e){
+
         });
     </script>
 
