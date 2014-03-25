@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Spring Data REST + Javascript</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="/webjars/jquery/2.0.3/jquery.js"></script>
+    <script src="/jsclient/jquery"></script>
+</head>
+<body>
+    <h2>Getting Started :: Spring Data REST + Javascript</h2>
+
+    <table id="people">
+        <tr><th>First Name</th><th>Last Name</th></tr>
+        <tr th:each="person : ${people}">
+            <td th:text="${person.firstName}"></td>
+            <td th:text="${person.lastName}"></td>
+            <td><button th:onclick="${'deletePic(' + person.id + ')'}">Delete</button></td>
+        </tr>
+    </table>
+
+    <form action="/" id="add">
+        <p>First name: <input type="text" name="firstName" /></p>
+        <p>Last name: <input type="text" name="lastName"/></p>
+        <p><input type="submit" value="Add" /></p>
+    </form>
+
+    <script src="application.js" type="application/javascript"></script>
+
+</body>
+</html>
