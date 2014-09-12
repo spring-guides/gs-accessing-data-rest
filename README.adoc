@@ -159,6 +159,8 @@ Date: Wed, 26 Feb 2014 20:26:55 GMT
 - `-H "Content-Type:application/json"` sets the content type so the application knows the payload contains a JSON object
 - `-d '{  "firstName" : "Frodo",  "lastName" : "Baggins" }'` is the data being sent
 
+NOTE: Notice how the previous `POST` operation includes a `Location` header. This contains the URI of the newly created resource. Spring Data REST also has two methods on `RepositoryRestConfiguration.setReturnBodyOnCreate(…)` and `setReturnBodyOnCreate(…)` which you can use to configure the framework to immediately return the representation of the resource just created.
+
 From this you can query against for all people:
 
 ```
