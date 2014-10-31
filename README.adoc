@@ -69,6 +69,8 @@ This repository is an interface and will allow you to perform various operations
 
 At runtime, Spring Data REST will create an implementation of this interface automatically. Then it will use the http://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to create RESTful endpoints at `/people`.
 
+NOTE: `@RepositoryRestResource` is not required for a repository to be exported. It is only used to change the export details, such as using `/people` instead of the default value of `/persons`.
+
 Here you have also defined a custom query to retrieve a list of `Person` objects based on the lastName. You'll see how to invoke it further down in this guide.
 
 == Make the application executable
