@@ -6,7 +6,7 @@ projects: [spring-data-rest]
 :spring_data_rest: 2.0.0.RELEASE
 :spring_data_jpa: 1.5.0.RELEASE
 :spring_data_commons: 1.7.0.RELEASE
-:spring_boot_version: 1.1.8.RELEASE
+:spring_boot_version: 1.1.9.RELEASE
 :EnableJpaRepositories: http://docs.spring.io/spring-data/jpa/docs/{spring_data_jpa}/api/org/springframework/data/jpa/repository/config/EnableJpaRepositories.html
 :Component: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/stereotype/Component.html
 :Controller: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/stereotype/Controller.html
