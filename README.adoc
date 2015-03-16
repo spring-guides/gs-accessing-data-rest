@@ -62,7 +62,7 @@ Next you need to create a simple repository.
 include::complete/src/main/java/hello/PersonRepository.java[]
 ----
 
-This repository is an interface and will allow you to perform various operations involving `Person` objects. It gets these operations by extending the http://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[PagingAndSortingRepositry] interface defined in Spring Data Commons.
+This repository is an interface and will allow you to perform various operations involving `Person` objects. It gets these operations by extending the http://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[PagingAndSortingRepository] interface defined in Spring Data Commons.
 
 At runtime, Spring Data REST will create an implementation of this interface automatically. Then it will use the http://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to create RESTful endpoints at `/people`.
 
