@@ -320,3 +320,6 @@ A very convenient aspect of this link:/understanding/HATEOAS[hypermedia-driven i
 Congratulations! You've just developed an application with a link:/guides/gs/rest-hateoas[hypermedia-based] link:/understanding/REST[RESTful] front end and a JPA-based back end.
 
 
+
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/footer.adoc[]
+
