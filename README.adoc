@@ -158,7 +158,7 @@ Date: Wed, 26 Feb 2014 20:26:55 GMT
 
 NOTE: Notice how the previous `POST` operation includes a `Location` header. This contains the URI of the newly created resource. Spring Data REST also has two methods on `RepositoryRestConfiguration.setReturnBodyOnCreate(…)` and `setReturnBodyOnCreate(…)` which you can use to configure the framework to immediately return the representation of the resource just created.
 
-From this you can query against for all people:
+From this you can query for all people:
 
 ```
 $ curl http://localhost:8080/people
@@ -248,9 +248,9 @@ $ curl http://localhost:8080/people/search/findByLastName?name=Baggins
 }
 ```
 
-Because you defined it to return `List<Person` in the code, it will return all of the results. If you had defined it only return `Person`, it will pick one of the Person objects to return. Since this can be unpredictable, you probably don't want to do that for queries that can return multiple entries.
+Because you defined it to return `List<Person>` in the code, it will return all of the results. If you had defined it only return `Person`, it will pick one of the Person objects to return. Since this can be unpredictable, you probably don't want to do that for queries that can return multiple entries.
 
-You can also issue PUT, PATCH, and DELETE REST calls to either replace, update, or delete existing records.
+You can also issue `PUT`, `PATCH`, and `DELETE` REST calls to either replace, update, or delete existing records.
 
 ```
 $ curl -X PUT -H "Content-Type:application/json" -d '{ "firstName": "Bilbo", "lastName": "Baggins" }' http://localhost:8080/people/1
