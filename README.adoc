@@ -86,7 +86,7 @@ include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/
 
 Spring Boot automatically spins up Spring Data JPA to create a concrete implementation of the `PersonRepository` and configure it to talk to a back end in-memory database using JPA.
 
-Spring Data REST is a Spring MVC application. The `@Import(RepositoryRestMvcConfiguration.class)` annotation imports a collection of Spring MVC controllers, JSON converters, and other beans needed to provide a RESTful front end. These components link up to the Spring Data JPA backend.
+Spring Data REST builds on top of Spring MVC. It creates a collection of Spring MVC controllers, JSON converters, and other beans needed to provide a RESTful front end. These components link up to the Spring Data JPA backend. Using Spring Boot this is all autoconfigured; if you want to investigate how that works, you could start by looking at the `RepositoryRestMvcConfiguration` in Spring Data REST.
 
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_subhead.adoc[]
