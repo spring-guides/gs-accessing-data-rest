@@ -143,7 +143,7 @@ $ curl http://localhost:8080/people
 There are currently no elements and hence no pages. Time to create a new `Person`!
 
 ```
-$ curl -i -X POST -H "Content-Type:application/json" -d '{  "firstName" : "Frodo",  "lastName" : "Baggins" }' http://localhost:8080/people
+$ curl -i -X POST -H "Content-Type:application/json" -d "{  \"firstName\" : \"Frodo\",  \"lastName\" : \"Baggins\" }" http://localhost:8080/people
 HTTP/1.1 201 Created
 Server: Apache-Coyote/1.1
 Location: http://localhost:8080/people/1
@@ -154,7 +154,7 @@ Date: Wed, 26 Feb 2014 20:26:55 GMT
 - `-i` ensures you can see the response message including the headers. The URI of the newly created `Person` is shown
 - `-X POST` signals this a POST used to create a new entry
 - `-H "Content-Type:application/json"` sets the content type so the application knows the payload contains a JSON object
-- `-d '{  "firstName" : "Frodo",  "lastName" : "Baggins" }'` is the data being sent
+- `-d "{  \"firstName\" : \"Frodo\",  \"lastName\" : \"Baggins\" }"` is the data being sent. Double quotes inside the data need to be escaped as `\"`.
 
 NOTE: Notice how the previous `POST` operation includes a `Location` header. This contains the URI of the newly created resource. Spring Data REST also has two methods on `RepositoryRestConfiguration.setReturnBodyOnCreate(…)` and `setReturnBodyOnUpdate(…)` which you can use to configure the framework to immediately return the representation of the resource just created. `RepositoryRestConfiguration.setReturnBodyForPutAndPost(…)` is a short cut method to enable representation responses for creates and updates.
 
@@ -253,7 +253,7 @@ Because you defined it to return `List<Person>` in the code, it will return all 
 You can also issue `PUT`, `PATCH`, and `DELETE` REST calls to either replace, update, or delete existing records.
 
 ```
-$ curl -X PUT -H "Content-Type:application/json" -d '{ "firstName": "Bilbo", "lastName": "Baggins" }' http://localhost:8080/people/1
+$ curl -X PUT -H "Content-Type:application/json" -d "{ \"firstName\": \"Bilbo\", \"lastName\": \"Baggins\" }" http://localhost:8080/people/1
 $ curl http://localhost:8080/people/1
 {
   "firstName" : "Bilbo",
@@ -267,7 +267,7 @@ $ curl http://localhost:8080/people/1
 ```
 
 ```
-$ curl -X PATCH -H "Content-Type:application/json" -d '{ "firstName": "Bilbo Jr." }' http://localhost:8080/people/1
+$ curl -X PATCH -H "Content-Type:application/json" -d "{ \"firstName\": \"Bilbo Jr.\" }" http://localhost:8080/people/1
 $ curl http://localhost:8080/people/1
 {
   "firstName" : "Bilbo Jr.",
