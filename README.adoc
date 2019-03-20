@@ -2,11 +2,11 @@
 :spring_data_rest: current
 :spring_data_jpa: current
 :spring_data_commons: current
-:spring_boot_version: 2.2.1.RELEASE
-:Controller: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/stereotype/Controller.html
-:DispatcherServlet: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/servlet/DispatcherServlet.html
-:SpringApplication: http://docs.spring.io/spring-boot/docs/{spring_boot_version}/api/org/springframework/boot/SpringApplication.html
-:ResponseBody: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/ResponseBody.html
+:spring_boot_version: 2.2.2.RELEASE
+:Controller: https://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/stereotype/Controller.html
+:DispatcherServlet: https://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/servlet/DispatcherServlet.html
+:SpringApplication: https://docs.spring.io/spring-boot/docs/{spring_boot_version}/api/org/springframework/boot/SpringApplication.html
+:ResponseBody: https://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/ResponseBody.html
 :toc:
 :icons: font
 :source-highlighter: prettify
@@ -20,8 +20,8 @@ link:/understanding/REST[RESTful] front end.
 
 You will build a Spring application that lets you create and retrieve `Person` objects
 stored in a database by using Spring Data REST. Spring Data REST takes the features of
-http://projects.spring.io/spring-hateoas[Spring HATEOAS] and
-http://projects.spring.io/spring-data-jpa[Spring Data JPA] and automatically combines them
+https://projects.spring.io/spring-hateoas[Spring HATEOAS] and
+https://projects.spring.io/spring-data-jpa[Spring Data JPA] and automatically combines them
 together.
 
 NOTE: Spring Data REST also supports link:/guides/gs/accessing-neo4j-data-rest[Spring Data
@@ -85,6 +85,10 @@ include::complete/src/main/java/com/example/accessingdatarest/Person.java[]
 
 The `Person` object has a first name and a last name. (There is also an ID object that is
 configured to be automatically generated, so you need not deal with that.)
+
+This repository is an interface and will allow you to perform various operations involving `Person` objects. It gets these operations by extending the https://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[PagingAndSortingRepository] interface defined in Spring Data Commons.
+
+At runtime, Spring Data REST will create an implementation of this interface automatically. Then it will use the https://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to create RESTful endpoints at `/people`.
 
 == Create a Person repository
 
@@ -254,7 +258,7 @@ $ curl http://localhost:8080/people
 
 The `persons` object contains a list that includes `Frodo`. Notice how it includes a
 `self` link. Spring Data REST also uses
-http://www.atteo.org/2011/12/12/Evo-Inflector.html[Evo Inflector] to pluralize the name of
+https://www.atteo.org/2011/12/12/Evo-Inflector.html[Evo Inflector] to pluralize the name of
 the entity for groupings.
 
 You can query directly for the individual record, as follows:
