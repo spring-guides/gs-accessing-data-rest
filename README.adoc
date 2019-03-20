@@ -3,10 +3,10 @@
 :spring_data_jpa: current
 :spring_data_commons: current
 :spring_boot_version: 2.1.3.RELEASE
-:Controller: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/stereotype/Controller.html
-:DispatcherServlet: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/servlet/DispatcherServlet.html
-:SpringApplication: http://docs.spring.io/spring-boot/docs/{spring_boot_version}/api/org/springframework/boot/SpringApplication.html
-:ResponseBody: http://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/ResponseBody.html
+:Controller: https://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/stereotype/Controller.html
+:DispatcherServlet: https://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/servlet/DispatcherServlet.html
+:SpringApplication: https://docs.spring.io/spring-boot/docs/{spring_boot_version}/api/org/springframework/boot/SpringApplication.html
+:ResponseBody: https://docs.spring.io/spring/docs/{spring_version}/javadoc-api/org/springframework/web/bind/annotation/ResponseBody.html
 :toc:
 :icons: font
 :source-highlighter: prettify
@@ -16,7 +16,7 @@ This guide walks you through the process of creating an application that accesse
 
 == What you'll build
 
-You'll build a Spring application that let's you create and retrieve `Person` objects stored in a database using Spring Data REST. Spring Data REST takes the features of http://projects.spring.io/spring-hateoas[Spring HATEOAS] and http://projects.spring.io/spring-data-jpa[Spring Data JPA] and combines them together automatically.
+You'll build a Spring application that let's you create and retrieve `Person` objects stored in a database using Spring Data REST. Spring Data REST takes the features of https://projects.spring.io/spring-hateoas[Spring HATEOAS] and https://projects.spring.io/spring-data-jpa[Spring Data JPA] and combines them together automatically.
 
 NOTE: Spring Data REST also supports link:/guides/gs/accessing-neo4j-data-rest[Spring Data Neo4j], link:/guides/gs/accessing-gemfire-data-rest[Spring Data Gemfire] and link:/guides/gs/accessing-mongodb-data-rest[Spring Data MongoDB] as backend data stores, but those are not part of this guide.
 
@@ -59,9 +59,9 @@ Next you need to create a simple repository.
 include::complete/src/main/java/hello/PersonRepository.java[]
 ----
 
-This repository is an interface and will allow you to perform various operations involving `Person` objects. It gets these operations by extending the http://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[PagingAndSortingRepository] interface defined in Spring Data Commons.
+This repository is an interface and will allow you to perform various operations involving `Person` objects. It gets these operations by extending the https://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[PagingAndSortingRepository] interface defined in Spring Data Commons.
 
-At runtime, Spring Data REST will create an implementation of this interface automatically. Then it will use the http://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to create RESTful endpoints at `/people`.
+At runtime, Spring Data REST will create an implementation of this interface automatically. Then it will use the https://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to create RESTful endpoints at `/people`.
 
 NOTE: `@RepositoryRestResource` is not required for a repository to be exported. It is only used to change the export details, such as using `/people` instead of the default value of `/persons`.
 
@@ -188,7 +188,7 @@ $ curl http://localhost:8080/people
 }
 ```
 
-The **persons** object contains a list with Frodo. Notice how it includes a **self** link. Spring Data REST also uses http://www.atteo.org/2011/12/12/Evo-Inflector.html[Evo Inflector] to pluralize the name of the entity for groupings.
+The **persons** object contains a list with Frodo. Notice how it includes a **self** link. Spring Data REST also uses https://www.atteo.org/2011/12/12/Evo-Inflector.html[Evo Inflector] to pluralize the name of the entity for groupings.
 
 You can query directly for the individual record:
 
