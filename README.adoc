@@ -139,7 +139,8 @@ $ curl http://localhost:8080/people
 There are currently no elements and hence no pages. Time to create a new `Person`!
 
 ```
-$ curl -i -X POST -H "Content-Type:application/json" -d '{"firstName": "Frodo", "lastName": "Baggins"}' http://localhost:8080/people
+$ curl -i -X POST -H "Content-Type:application/json" -d "{  \"firstName\" : \"Frodo\",  \"lastName\" : \"Baggins\" }" http://localhost:8080/people
+
 HTTP/1.1 201 Created
 Server: Apache-Coyote/1.1
 Location: http://localhost:8080/people/1
@@ -249,7 +250,7 @@ Because you defined it to return `List<Person>` in the code, it will return all 
 You can also issue `PUT`, `PATCH`, and `DELETE` REST calls to either replace, update, or delete existing records.
 
 ```
-$ curl -X PUT -H "Content-Type:application/json" -d '{"firstName": "Bilbo", "lastName": "Baggins"}' http://localhost:8080/people/1
+$ curl -X PUT -H "Content-Type:application/json" -d "{\"firstName\": \"Bilbo", \"lastName\": \"Baggins\"}" http://localhost:8080/people/1
 $ curl http://localhost:8080/people/1
 {
   "firstName" : "Bilbo",
@@ -263,7 +264,7 @@ $ curl http://localhost:8080/people/1
 ```
 
 ```
-$ curl -X PATCH -H "Content-Type:application/json" -d '{"firstName": "Bilbo Jr."}' http://localhost:8080/people/1
+$ curl -X PATCH -H "Content-Type:application/json" -d "{\"firstName\": \"Bilbo Jr.\"}" http://localhost:8080/people/1
 $ curl http://localhost:8080/people/1
 {
   "firstName" : "Bilbo Jr.",
