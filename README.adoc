@@ -12,94 +12,135 @@
 :source-highlighter: prettify
 :project_id: gs-accessing-data-rest
 
-This guide walks you through the process of creating an application that accesses relational JPA data through a link:/guides/gs/rest-hateoas[hypermedia-based] link:/understanding/REST[RESTful] front end.
+This guide walks you through the process of creating an application that accesses
+relational JPA data through a link:/guides/gs/rest-hateoas[hypermedia-based]
+link:/understanding/REST[RESTful] front end.
 
-== What you'll build
+== What You Will Build
 
-You'll build a Spring application that let's you create and retrieve `Person` objects stored in a database using Spring Data REST. Spring Data REST takes the features of http://projects.spring.io/spring-hateoas[Spring HATEOAS] and http://projects.spring.io/spring-data-jpa[Spring Data JPA] and combines them together automatically.
+You will build a Spring application that lets you create and retrieve `Person` objects
+stored in a database by using Spring Data REST. Spring Data REST takes the features of
+http://projects.spring.io/spring-hateoas[Spring HATEOAS] and
+http://projects.spring.io/spring-data-jpa[Spring Data JPA] and automatically combines them
+together.
 
-NOTE: Spring Data REST also supports link:/guides/gs/accessing-neo4j-data-rest[Spring Data Neo4j], link:/guides/gs/accessing-gemfire-data-rest[Spring Data Gemfire] and link:/guides/gs/accessing-mongodb-data-rest[Spring Data MongoDB] as backend data stores, but those are not part of this guide.
+NOTE: Spring Data REST also supports link:/guides/gs/accessing-neo4j-data-rest[Spring Data
+Neo4j], link:/guides/gs/accessing-gemfire-data-rest[Spring Data Gemfire], and
+link:/guides/gs/accessing-mongodb-data-rest[Spring Data MongoDB] as backend data stores,
+but those are not part of this guide.
 
-== What you'll need
+== What You Need
 
 :java_version: 1.8
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/prereq_editor_jdk_buildtools.adoc[]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/how_to_complete_this_guide.adoc[]
 
+== Starting with Spring Initializr
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-gradle.adoc[]
+For all Spring applications, you should start with the https://start.spring.io[Spring
+Initializr]. The Initializr offers a fast way to pull in all the dependencies you need for
+an application and does a lot of the set up for you. This example needs the Rest
+Repositories, Spring Data JPA, and H2 dependencies. The following image shows the
+Initializr set up for this sample project:
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-maven.adoc[]
+image::images/initializr.jpg[]
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/hide-show-sts.adoc[]
+NOTE: The preceding image shows the Initializr with Maven chosen as the build tool. You
+can also use Gradle. It also shows values of `com.example` and `accessing-data-rest` as
+the Group and Artifact, respectively. You will use those values throughout the rest of
+this sample.
 
+The following listing shows the `pom.xml` file created when you choose Maven:
 
+====
+[src,xml]
+----
+include::complete/pom.xml[]
+----
+====
+
+The following listing shows the `build.gradle` file created when you choose Gradle:
+
+====
+[src,groovy]
+----
+include::complete/build.gradle[]
+----
+====
 
 [[initial]]
-== Create a domain object
+== Create a Domain Object
 
-Create a new domain object to present a person.
+Create a new domain object to present a person, as the following listing (in
+  `src/main/java/hello/Person.java`) shows:
 
-`src/main/java/hello/Person.java`
+====
 [source,java]
 ----
 include::complete/src/main/java/hello/Person.java[]
 ----
+====
 
-The `Person` has a first name and a last name. There is also an id object that is configured to be automatically generated so you don't have to deal with that.
+The `Person` object has a first name and a last name. (There is also an ID object that is
+configured to be automatically generated, so you need not deal with that.)
 
 == Create a Person repository
 
-Next you need to create a simple repository.
+Next, you need to create a simple repository, as the following listing (in
+  `src/main/java/hello/PersonRepository.java`) shows:
 
-`src/main/java/hello/PersonRepository.java`
+====
 [source,java]
 ----
 include::complete/src/main/java/hello/PersonRepository.java[]
 ----
+====
 
-This repository is an interface and will allow you to perform various operations involving `Person` objects. It gets these operations by extending the http://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[PagingAndSortingRepository] interface defined in Spring Data Commons.
+This repository is an interface that lets you perform various operations involving
+`Person` objects. It gets these operations by extending the
+http://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[`PagingAndSortingRepository`] interface that is defined in
+Spring Data Commons.
 
-At runtime, Spring Data REST will create an implementation of this interface automatically. Then it will use the http://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to create RESTful endpoints at `/people`.
+At runtime, Spring Data REST automatically creates an implementation of this interface.
+Then it uses the http://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to
+create RESTful endpoints at `/people`.
 
-NOTE: `@RepositoryRestResource` is not required for a repository to be exported. It is only used to change the export details, such as using `/people` instead of the default value of `/persons`.
+NOTE: `@RepositoryRestResource` is not required for a repository to be exported. It is
+used only to change the export details, such as using `/people` instead of the default
+value of `/persons`.
 
-Here you have also defined a custom query to retrieve a list of `Person` objects based on the lastName. You'll see how to invoke it further down in this guide.
+Here you have also defined a custom query to retrieve a list of `Person` objects based on
+the `lastName`. You can see how to invoke it later in this guide.
 
-== Make the application executable
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/spring-boot-application-new-path.adoc[]
 
-Although it is possible to package this service as a traditional link:/understanding/WAR[WAR] file for deployment to an external application server, the simpler approach demonstrated below creates a standalone application. You package everything in a single, executable JAR file, driven by a good old Java `main()` method. Along the way, you use Spring's support for embedding the link:/understanding/Tomcat[Tomcat] servlet container as the HTTP runtime, instead of deploying to an external instance.
+Spring Boot automatically spins up Spring Data JPA to create a concrete implementation of
+the `PersonRepository` and configure it to talk to a back end in-memory database by using
+JPA.
 
-
-`src/main/java/hello/Application.java`
-[source,java]
-----
-include::complete/src/main/java/hello/Application.java[]
-----
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/spring-boot-application.adoc[]
-
-Spring Boot automatically spins up Spring Data JPA to create a concrete implementation of the `PersonRepository` and configure it to talk to a back end in-memory database using JPA.
-
-Spring Data REST builds on top of Spring MVC. It creates a collection of Spring MVC controllers, JSON converters, and other beans needed to provide a RESTful front end. These components link up to the Spring Data JPA backend. Using Spring Boot this is all autoconfigured; if you want to investigate how that works, you could start by looking at the `RepositoryRestMvcConfiguration` in Spring Data REST.
-
+Spring Data REST builds on top of Spring MVC. It creates a collection of Spring MVC
+controllers, JSON converters, and other beans to provide a RESTful front end. These
+components link up to the Spring Data JPA backend. When you use Spring Boot, this is all
+autoconfigured. If you want to investigate how that works, by looking at the
+`RepositoryRestMvcConfiguration` in Spring Data REST.
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_subhead.adoc[]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/build_an_executable_jar_with_both.adoc[]
 
-
 Logging output is displayed. The service should be up and running within a few seconds.
 
+== Test the Application
 
-== Test the application
+Now that the application is running, you can test it. You can use any REST client you
+wish. The following examples use the *nix tool, `curl`.
 
-Now that the application is running, you can test it. You can use any REST client you wish. The following examples use the *nix tool `curl`.
+First you want to see the top level service. The following example shows how to do so:
 
-First you want to see the top level service.
-
-```
+====
+[src,bash]
+----
 $ curl http://localhost:8080
 {
   "_links" : {
@@ -109,13 +150,20 @@ $ curl http://localhost:8080
     }
   }
 }
-```
+----
+====
 
-Here you get a first glimpse of what this server has to offer. There is a **people** link located at http://localhost:8080/people. It has some options such as `?page`, `?size`, and `?sort`.
+The preceding example provides a first glimpse of what this server has to offer. There is a `people` link located at `http://localhost:8080/people`. It has some options, such as `?page`, `?size`, and `?sort`.
 
-NOTE: Spring Data REST uses the http://stateless.co/hal_specification.html[HAL format] for JSON output. It is flexible and offers a convenient way to supply links adjacent to the data that is served.
+NOTE: Spring Data REST uses the http://stateless.co/hal_specification.html[HAL format] for
+JSON output. It is flexible and offers a convenient way to supply links adjacent to the
+data that is served.
 
-```
+The following example shows how to see the people records (none at present):
+
+====
+[src,bash]
+----
 $ curl http://localhost:8080/people
 {
   "_links" : {
@@ -134,29 +182,43 @@ $ curl http://localhost:8080/people
     "number" : 0
   }
 }
-```
+----
+====
 
-There are currently no elements and hence no pages. Time to create a new `Person`!
+There are currently no elements and, hence, no pages. Time to create a new `Person`!
+The following listing shows how to do so:
 
-```
+====
+[src,bash]
+----
 $ curl -i -X POST -H "Content-Type:application/json" -d '{"firstName": "Frodo", "lastName": "Baggins"}' http://localhost:8080/people
 HTTP/1.1 201 Created
 Server: Apache-Coyote/1.1
 Location: http://localhost:8080/people/1
 Content-Length: 0
 Date: Wed, 26 Feb 2014 20:26:55 GMT
-```
+----
 
-- `-i` ensures you can see the response message including the headers. The URI of the newly created `Person` is shown
-- `-X POST` signals this a POST used to create a new entry
-- `-H "Content-Type:application/json"` sets the content type so the application knows the payload contains a JSON object
-- `-d '{"firstName": "Frodo", "lastName": "Baggins"}'` is the data being sent
+- `-i`: Ensures you can see the response message including the headers. The URI of the
+newly created `Person` is shown.
+- `-X POST`: Signals this a POST used to create a new entry.
+- `-H "Content-Type:application/json"`: Sets the content type so the application knows the
+payload contains a JSON object.
+- `-d '{"firstName": "Frodo", "lastName": "Baggins"}'`: Is the data being sent.
+====
 
-NOTE: Notice how the previous `POST` operation includes a `Location` header. This contains the URI of the newly created resource. Spring Data REST also has two methods on `RepositoryRestConfiguration.setReturnBodyOnCreate(…)` and `setReturnBodyOnUpdate(…)` which you can use to configure the framework to immediately return the representation of the resource just created. `RepositoryRestConfiguration.setReturnBodyForPutAndPost(…)` is a short cut method to enable representation responses for creates and updates.
+NOTE: Notice how the previous `POST` operation includes a `Location` header. This contains
+the URI of the newly created resource. Spring Data REST also has two methods
+(`RepositoryRestConfiguration.setReturnBodyOnCreate(…)` and `setReturnBodyOnUpdate(…)`)
+that you can use to configure the framework to immediately return the representation of
+the resource just created. `RepositoryRestConfiguration.setReturnBodyForPutAndPost(…)` is
+a shortcut method to enable representation responses for create and update operations.
 
-From this you can query for all people:
+You can query for all people, as the following example shows:
 
-```
+====
+[src,bash]
+----
 $ curl http://localhost:8080/people
 {
   "_links" : {
@@ -186,13 +248,19 @@ $ curl http://localhost:8080/people
     "number" : 0
   }
 }
-```
+----
+====
 
-The **persons** object contains a list with Frodo. Notice how it includes a **self** link. Spring Data REST also uses http://www.atteo.org/2011/12/12/Evo-Inflector.html[Evo Inflector] to pluralize the name of the entity for groupings.
+The `persons` object contains a list that includes `Frodo`. Notice how it includes a
+`self` link. Spring Data REST also uses
+http://www.atteo.org/2011/12/12/Evo-Inflector.html[Evo Inflector] to pluralize the name of
+the entity for groupings.
 
-You can query directly for the individual record:
+You can query directly for the individual record, as follows:
 
-```
+====
+[src,bash]
+----
 $ curl http://localhost:8080/people/1
 {
   "firstName" : "Frodo",
@@ -203,15 +271,19 @@ $ curl http://localhost:8080/people/1
     }
   }
 }
-```
+----
+====
 
-NOTE: This might appear to be purely web based, but behind the scenes, there is an H2 relational database. In production, you would probably use a real one, like PostgreSQL.
+NOTE: This might appear to be purely web-based. However, behind the scenes, there is an H2
+relational database. In production, you would probably use a real one, such as PostgreSQL.
 
-In this guide, there is only one domain object. With a more complex system where domain objects are related to each other, Spring Data REST will render additional links to help navigate to connected records.
+TIP: In this guide, there is only one domain object. With a more complex system, where domain objects are related to each other, Spring Data REST renders additional links to help navigate to connected records.
 
-Find all the custom queries:
+You can find all the custom queries, as shown in the following example:
 
-```
+====
+[src,bash]
+----
 $ curl http://localhost:8080/people/search
 {
   "_links" : {
@@ -221,13 +293,17 @@ $ curl http://localhost:8080/people/search
     }
   }
 }
-```
+----
+====
 
-You can see the URL for the query including the HTTP query parameter `name`. If you'll notice, this matches the `@Param("name")` annotation embedded in the interface.
+You can see the URL for the query, including the HTTP query parameter, `name`. Note that
+this matches the `@Param("name")` annotation embedded in the interface.
 
-To use the `findByLastName` query, do this:
+The following example shows how to use the `findByLastName` query:
 
-```
+====
+[src,bash]
+----
 $ curl http://localhost:8080/people/search/findByLastName?name=Baggins
 {
   "_embedded" : {
@@ -242,13 +318,20 @@ $ curl http://localhost:8080/people/search/findByLastName?name=Baggins
     } ]
   }
 }
-```
+----
+====
 
-Because you defined it to return `List<Person>` in the code, it will return all of the results. If you had defined it only return `Person`, it will pick one of the Person objects to return. Since this can be unpredictable, you probably don't want to do that for queries that can return multiple entries.
+Because you defined it to return `List<Person>` in the code, it returns all of the
+results. If you had defined it to return only `Person`, it picks one of the `Person`
+objects to return. Since this can be unpredictable, you probably do not want to do that
+for queries that can return multiple entries.
 
-You can also issue `PUT`, `PATCH`, and `DELETE` REST calls to either replace, update, or delete existing records.
+You can also issue `PUT`, `PATCH`, and `DELETE` REST calls to replace, update, or delete
+existing records (respectively). The following example uses a `PUT` call:
 
-```
+====
+[src,bash]
+----
 $ curl -X PUT -H "Content-Type:application/json" -d '{"firstName": "Bilbo", "lastName": "Baggins"}' http://localhost:8080/people/1
 $ curl http://localhost:8080/people/1
 {
@@ -260,9 +343,15 @@ $ curl http://localhost:8080/people/1
     }
   }
 }
-```
+----
+====
 
-```
+
+The following example uses a `PUT` call:
+
+====
+[src,bash]
+----
 $ curl -X PATCH -H "Content-Type:application/json" -d '{"firstName": "Bilbo Jr."}' http://localhost:8080/people/1
 $ curl http://localhost:8080/people/1
 {
@@ -274,13 +363,17 @@ $ curl http://localhost:8080/people/1
     }
   }
 }
-```
+----
+====
 
-NOTE: PUT replaces an entire record. Fields not supplied will be replaced with null. PATCH can be used to update a subset of items.
+NOTE: `PUT` replaces an entire record. Fields not supplied are replaced with `null`. You
+can use `PATCH` to update a subset of items.
 
-You can delete records:
+You can also delete records, as the following example shows:
 
-```
+====
+[src,bash]
+----
 $ curl -X DELETE http://localhost:8080/people/1
 $ curl http://localhost:8080/people
 {
@@ -300,15 +393,26 @@ $ curl http://localhost:8080/people
     "number" : 0
   }
 }
-```
+----
+====
 
-A very convenient aspect of this link:/understanding/HATEOAS[hypermedia-driven interface] is how you can discover all the RESTful endpoints using curl (or whatever REST client you are using). There is no need to exchange a formal contract or interface document with your customers.
+A convenient aspect of this hypermedia-driven interface is that you can discover all the
+RESTful endpoints by using curl (or whatever REST client you like). You need not exchange
+a formal contract or interface document with your customers.
 
 == Summary
 
-Congratulations! You've just developed an application with a link:/guides/gs/rest-hateoas[hypermedia-based] link:/understanding/REST[RESTful] front end and a JPA-based back end.
+Congratulations! You have developed an application with a
+link:/guides/gs/rest-hateoas[hypermedia-based] RESTful front end and a JPA-based back end.
 
+== See Also
 
+The following guides may also be helpful:
+
+* https://spring.io/guides/gs/rest-hateoas[Building a Hypermedia-Driven RESTful Web Service]
+* https://spring.io/guides/gs/consuming-rest-angularjs/[Consuming a RESTful Web Service with AngularJS]
+* https://spring.io/guides/gs/accessing-data-rest/[Accessing JPA Data with REST]
+* https://spring.io/guides/gs/accessing-neo4j-data-rest/[Accessing Neo4j Data with REST]
+* https://spring.io/guides/gs/accessing-mongodb-data-rest/[Accessing MongoDB Data with REST]
 
 include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/master/footer.adoc[]
-
