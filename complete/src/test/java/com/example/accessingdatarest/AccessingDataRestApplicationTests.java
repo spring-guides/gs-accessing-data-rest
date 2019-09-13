@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package hello;
+package com.example.accessingdatarest;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ApplicationTests {
+public class AccessingDataRestApplicationTests {
 
 	@Autowired
 	private MockMvc mockMvc;

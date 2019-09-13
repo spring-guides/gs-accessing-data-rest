@@ -1,4 +1,4 @@
-package hello;
+package com.example.accessingdatarest;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
