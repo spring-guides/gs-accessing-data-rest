@@ -73,12 +73,12 @@ include::complete/build.gradle[]
 == Create a Domain Object
 
 Create a new domain object to present a person, as the following listing (in
-  `src/main/java/hello/Person.java`) shows:
+  `src/main/java/com/example/accessingdatarest/Person.java`) shows:
 
 ====
 [source,java]
 ----
-include::complete/src/main/java/hello/Person.java[]
+include::complete/src/main/java/com/example/accessingdatarest/Person.java[]
 ----
 ====
 
@@ -88,12 +88,12 @@ configured to be automatically generated, so you need not deal with that.)
 == Create a Person repository
 
 Next, you need to create a simple repository, as the following listing (in
-  `src/main/java/hello/PersonRepository.java`) shows:
+  `src/main/java/com/example/accessingdatarest/PersonRepository.java`) shows:
 
 ====
 [source,java]
 ----
-include::complete/src/main/java/hello/PersonRepository.java[]
+include::complete/src/main/java/com/example/accessingdatarest/PersonRepository.java[]
 ----
 ====
 
