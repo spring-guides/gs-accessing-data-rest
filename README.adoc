@@ -104,11 +104,11 @@ include::complete/src/main/java/com/example/accessingdatarest/PersonRepository.j
 
 This repository is an interface that lets you perform various operations involving
 `Person` objects. It gets these operations by extending the
-http://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[`PagingAndSortingRepository`] interface that is defined in
+https://docs.spring.io/spring-data/commons/docs/{spring_data_commons}/api/org/springframework/data/repository/PagingAndSortingRepository.html[`PagingAndSortingRepository`] interface that is defined in
 Spring Data Commons.
 
 At runtime, Spring Data REST automatically creates an implementation of this interface.
-Then it uses the http://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to
+Then it uses the https://docs.spring.io/spring-data/rest/docs/{spring_data_rest}/api/org/springframework/data/rest/core/annotation/RepositoryRestResource.html[@RepositoryRestResource] annotation to direct Spring MVC to
 create RESTful endpoints at `/people`.
 
 NOTE: `@RepositoryRestResource` is not required for a repository to be exported. It is
