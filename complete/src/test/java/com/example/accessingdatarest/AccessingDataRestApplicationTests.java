@@ -16,9 +16,8 @@
 
 package com.example.accessingdatarest;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,31 +32,30 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AccessingDataRestApplicationTests {
 
 	@Autowired
-	private static MockMvc mockMvc;
+	private MockMvc mockMvc;
 
 	@Autowired
-	private static PersonRepository personRepository;
+	private PersonRepository personRepository;
 
-	@BeforeAll
-	public static void deleteAllBeforeTests() throws Exception {
+	@BeforeEach
+	public void deleteAllBeforeTests() throws Exception {
 		personRepository.deleteAll();
 	}
 
 	@Test
-	public static void shouldReturnRepositoryIndex() throws Exception {
+	public void shouldReturnRepositoryIndex() throws Exception {
 
 		mockMvc.perform(get("/")).andDo(print()).andExpect(status().isOk()).andExpect(
 				jsonPath("$._links.people").exists());
 	}
 
 	@Test
-	public static void shouldCreateEntity() throws Exception {
+	public void shouldCreateEntity() throws Exception {
 
 		mockMvc.perform(post("/people").content(
 				"{\"firstName\": \"Frodo\", \"lastName\":\"Baggins\"}")).andExpect(
@@ -66,7 +64,7 @@ public class AccessingDataRestApplicationTests {
 	}
 
 	@Test
-	public static void shouldRetrieveEntity() throws Exception {
+	public void shouldRetrieveEntity() throws Exception {
 
 		MvcResult mvcResult = mockMvc.perform(post("/people").content(
 				"{\"firstName\": \"Frodo\", \"lastName\":\"Baggins\"}")).andExpect(
@@ -79,7 +77,7 @@ public class AccessingDataRestApplicationTests {
 	}
 
 	@Test
-	public static void shouldQueryEntity() throws Exception {
+	public void shouldQueryEntity() throws Exception {
 
 		mockMvc.perform(post("/people").content(
 				"{ \"firstName\": \"Frodo\", \"lastName\":\"Baggins\"}")).andExpect(
@@ -93,7 +91,7 @@ public class AccessingDataRestApplicationTests {
 	}
 
 	@Test
-	public static void shouldUpdateEntity() throws Exception {
+	public void shouldUpdateEntity() throws Exception {
 
 		MvcResult mvcResult = mockMvc.perform(post("/people").content(
 				"{\"firstName\": \"Frodo\", \"lastName\":\"Baggins\"}")).andExpect(
@@ -111,7 +109,7 @@ public class AccessingDataRestApplicationTests {
 	}
 
 	@Test
-	public static void shouldPartiallyUpdateEntity() throws Exception {
+	public void shouldPartiallyUpdateEntity() throws Exception {
 
 		MvcResult mvcResult = mockMvc.perform(post("/people").content(
 				"{\"firstName\": \"Frodo\", \"lastName\":\"Baggins\"}")).andExpect(
@@ -129,7 +127,7 @@ public class AccessingDataRestApplicationTests {
 	}
 
 	@Test
-	public static void shouldDeleteEntity() throws Exception {
+	public void shouldDeleteEntity() throws Exception {
 
 		MvcResult mvcResult = mockMvc.perform(post("/people").content(
 				"{ \"firstName\": \"Bilbo\", \"lastName\":\"Baggins\"}")).andExpect(
