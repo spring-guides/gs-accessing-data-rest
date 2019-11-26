@@ -77,7 +77,7 @@ Create a new domain object to present a person, as the following listing (in
   `src/main/java/com/example/accessingdatarest/Person.java`) shows:
 
 ====
-[source,java]
+[source,java,tabsize=2]
 ----
 include::complete/src/main/java/com/example/accessingdatarest/Person.java[]
 ----
@@ -92,7 +92,7 @@ Next, you need to create a simple repository, as the following listing (in
   `src/main/java/com/example/accessingdatarest/PersonRepository.java`) shows:
 
 ====
-[source,java]
+[source,java,tabsize=2]
 ----
 include::complete/src/main/java/com/example/accessingdatarest/PersonRepository.java[]
 ----
