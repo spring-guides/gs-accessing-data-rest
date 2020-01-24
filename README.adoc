@@ -171,6 +171,9 @@ The following example shows how to see the people records (none at present):
 ----
 $ curl http://localhost:8080/people
 {
+  "_embedded" : {
+    "people" : []
+  },
   "_links" : {
     "self" : {
       "href" : "http://localhost:8080/people{?page,size,sort}",
@@ -196,7 +199,7 @@ The following listing shows how to do so:
 ====
 [src,bash]
 ----
-$ curl -i -X POST -H "Content-Type:application/json" -d '{"firstName": "Frodo", "lastName": "Baggins"}' http://localhost:8080/people
+$ curl -i -H "Content-Type:application/json" -d '{"firstName": "Frodo", "lastName": "Baggins"}' http://localhost:8080/people
 HTTP/1.1 201 Created
 Server: Apache-Coyote/1.1
 Location: http://localhost:8080/people/1
@@ -206,13 +209,12 @@ Date: Wed, 26 Feb 2014 20:26:55 GMT
 
 - `-i`: Ensures you can see the response message including the headers. The URI of the
 newly created `Person` is shown.
-- `-X POST`: Signals this a POST used to create a new entry.
 - `-H "Content-Type:application/json"`: Sets the content type so the application knows the
 payload contains a JSON object.
 - `-d '{"firstName": "Frodo", "lastName": "Baggins"}'`: Is the data being sent.
 ====
 
-NOTE: Notice how the previous `POST` operation includes a `Location` header. This contains
+NOTE: Notice how the response to the `POST` operation includes a `Location` header. This contains
 the URI of the newly created resource. Spring Data REST also has two methods
 (`RepositoryRestConfiguration.setReturnBodyOnCreate(…)` and `setReturnBodyOnUpdate(…)`)
 that you can use to configure the framework to immediately return the representation of
@@ -236,7 +238,7 @@ $ curl http://localhost:8080/people
     }
   },
   "_embedded" : {
-    "persons" : [ {
+    "people" : [ {
       "firstName" : "Frodo",
       "lastName" : "Baggins",
       "_links" : {
@@ -256,7 +258,7 @@ $ curl http://localhost:8080/people
 ----
 ====
 
-The `persons` object contains a list that includes `Frodo`. Notice how it includes a
+The `people` object contains a list that includes `Frodo`. Notice how it includes a
 `self` link. Spring Data REST also uses
 https://www.atteo.org/2011/12/12/Evo-Inflector.html[Evo Inflector] to pluralize the name of
 the entity for groupings.
@@ -352,7 +354,7 @@ $ curl http://localhost:8080/people/1
 ====
 
 
-The following example uses a `PUT` call:
+The following example uses a `PATCH` call:
 
 ====
 [src,bash]
