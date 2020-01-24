@@ -212,6 +212,7 @@ newly created `Person` is shown.
 - `-H "Content-Type:application/json"`: Sets the content type so the application knows the
 payload contains a JSON object.
 - `-d '{"firstName": "Frodo", "lastName": "Baggins"}'`: Is the data being sent.
+- If you are on Windows, the command above will work on https://docs.microsoft.com/en-us/windows/wsl[WSL]. If you can't install WSL, you might need to replace the single quotes with double quotes and escape the existing double quotes, i.e. `-d "{\"firstName\": \"Frodo\", \"lastName\": \"Baggins\"}"`.
 ====
 
 NOTE: Notice how the response to the `POST` operation includes a `Location` header. This contains
