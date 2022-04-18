@@ -20,8 +20,8 @@ link:/understanding/REST[RESTful] front end.
 
 You will build a Spring application that lets you create and retrieve `Person` objects
 stored in a database by using Spring Data REST. Spring Data REST takes the features of
-https://projects.spring.io/spring-hateoas[Spring HATEOAS] and
-https://projects.spring.io/spring-data-jpa[Spring Data JPA] and automatically combines them
+https://spring.io/projects/spring-hateoas[Spring HATEOAS] and
+https://spring.io/projects/spring-data-jpa[Spring Data JPA] and automatically combines them
 together.
 
 NOTE: Spring Data REST also supports link:/guides/gs/accessing-neo4j-data-rest[Spring Data
@@ -405,7 +405,6 @@ The following guides may also be helpful:
 * https://spring.io/guides/gs/consuming-rest/[Consuming a RESTful Web Service]
 * https://spring.io/guides/gs/consuming-rest-angularjs/[Consuming a RESTful Web Service with AngularJS]
 * https://spring.io/guides/gs/consuming-rest-jquery/[Consuming a RESTful Web Service with jQuery]
-* https://spring.io/guides/gs/consuming-rest-restjs/[Consuming a RESTful Web Service with rest.js]
 * https://spring.io/guides/gs/securing-web/[Securing a Web Application]
 * https://spring.io/guides/tutorials/rest/[Building REST services with Spring]
 * https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot]
