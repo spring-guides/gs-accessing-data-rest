@@ -3,6 +3,8 @@
 :toc:
 :icons: font
 :source-highlighter: prettify
+:project_id: gs-accessing-data-rest
+:java_version: 17
 
 This guide walks you through the process of creating an application that accesses
 relational JPA data through a link:/guides/gs/rest-hateoas[hypermedia-based]
@@ -21,11 +23,7 @@ Neo4j], link:/guides/gs/accessing-gemfire-data-rest[Spring Data Gemfire], and
 link:/guides/gs/accessing-mongodb-data-rest[Spring Data MongoDB] as backend data stores,
 but those are not part of this guide.
 
-== What You Need
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/prereq_editor_jdk_buildtools.adoc[]
-
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/how_to_complete_this_guide.adoc[]
+include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/guide_introduction.adoc[]
 
 [[scratch]]
 == Starting with Spring Initializr
@@ -89,8 +87,6 @@ value of `/persons`.
 Here you have also defined a custom query to retrieve a list of `Person` objects based on
 the `lastName`. You can see how to invoke it later in this guide.
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/spring-boot-application-new-path.adoc[]
-
 Spring Boot automatically spins up Spring Data JPA to create a concrete implementation of
 the `PersonRepository` and configure it to talk to a back end in-memory database by using
 JPA.
@@ -101,11 +97,18 @@ components link up to the Spring Data JPA backend. When you use Spring Boot, thi
 autoconfigured. If you want to investigate how that works, by looking at the
 `RepositoryRestMvcConfiguration` in Spring Data REST.
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/build_an_executable_jar_subhead.adoc[]
+== Running the Application
 
-include::https://raw.githubusercontent.com/spring-guides/getting-started-macros/main/build_an_executable_jar_with_both.adoc[]
+You can now run the application by executing the main method in `AccessingDataRestApplication`.
+You can run the program from your IDE, or by executing the following Gradle command in the project root directory:
+```
+./gradlew bootRun
+```
 
-Logging output is displayed. The service should be up and running within a few seconds.
+Alternatively, you could use Maven to run the application using the command:
+```
+./mvnw spring-boot:run
+```
 
 == Test the Application
 
@@ -394,8 +397,6 @@ The following guides may also be helpful:
 * https://spring.io/guides/gs/accessing-data-mysql/[Accessing data with MySQL]
 * https://spring.io/guides/gs/accessing-neo4j-data-rest/[Accessing Neo4j Data with REST]
 * https://spring.io/guides/gs/consuming-rest/[Consuming a RESTful Web Service]
-* https://spring.io/guides/gs/consuming-rest-angularjs/[Consuming a RESTful Web Service with AngularJS]
-* https://spring.io/guides/gs/consuming-rest-jquery/[Consuming a RESTful Web Service with jQuery]
 * https://spring.io/guides/gs/securing-web/[Securing a Web Application]
 * https://spring.io/guides/tutorials/rest/[Building REST services with Spring]
 * https://spring.io/guides/gs/spring-boot/[Building an Application with Spring Boot]
